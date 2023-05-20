@@ -2,12 +2,14 @@ import estilo from './styles.module.scss'
 import Filtrar from '../../components/MenuFiltrar'
 import Produtos from '../../components/ProdutoCard'
 import Ordenar from '../../components/MenuOrdenar'
-import { useEffect } from 'react'
-export default function ProdutoHome() {
+import { useEffect, useState } from 'react'
+export default function ProdutoHome(){
 
-    useEffect(()=>{console.log(1)
-    fetch('https://loja-backend.onrender.com/produtos').then(res => res.json()).then(data => console.log(data))
+    const [produtos, setProdutos] = useState([])
 
+    useEffect(() => {
+        console.log("loja online")
+        fetch('https://loja-backend.onrender.com/produtos').then(res => res.json()).then(data => setProdutos(data))
     }, [])
 
     return (
@@ -21,21 +23,9 @@ export default function ProdutoHome() {
                         <Filtrar />
                     </div>
                     <div className={estilo.produtos}>
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
-                        <Produtos />
+                        {produtos.map((produto) => (
+                            <Produtos key={produto.id} id={produto.id} categoria={produto.categoria} descricao={produto.descricao} valor={produto.valor} img={produto.img} />
+                        ))}
                     </div>
 
                 </div>
