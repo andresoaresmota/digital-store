@@ -8,7 +8,7 @@ export default function ProdutoHome(props) {
             <Link to={"/produtos/" + props.id}>
                 <div className={estilo.Produto}>
                     <div className={estilo.caixaImagem}>
-                        <img src={props.imagem} alt="" className={estilo.ImagemProduto} />
+                        <img src={props.img} alt="" className={estilo.ImagemProduto} />
                     </div>
                     <div className={estilo.TipoProduto}>
                         {props.categoria}
