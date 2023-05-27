@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import styles from './styles.module.scss'
 import faceLogo from '../../assets/images/face-logo.png'
 import Botao from '../Botao'
@@ -12,9 +12,9 @@ export default function LoginContainer() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     let navigate = useNavigate()
-    
+
     const usuario = useContext(AuthContext)
-    
+
     // const [currentUser, setCurrentUser] = useState({ nome:'fulano', email: 'fulano@digitalstore',password:'123456' });
     const handleChange = (e) => {
         setEmail(e.target.value);
@@ -27,19 +27,28 @@ export default function LoginContainer() {
     const handleSubmit = (e) => {
         e.preventDefault()
         handleLogin()
-        
+
     };
-    
-    function handleLogin(){
-        if(email&&password){
-            //nome generico de usuario para teste do useContext
-           if(email==="fulano@digitalstore.com"&&password==="123456"){
-            //salvar o useContext
-            usuario.setCurrentUser({ nome:'fulano', email: 'fulano@digitalstore'})
-            navigate("/")  //path para home
-           }
-           
-        }
+
+    async function handleLogin() {
+
+        const rawResponse = await fetch('https://backend-dc-server.onrender.com/users/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: email,
+                password: password
+            })
+        });
+
+        const { token } = await rawResponse.json();
+        console.log(token);
+        localStorage.setItem('token', token)
+
+        navigate("/meuspedidos")
     }
 
     return (<div className={styles.containerLogin}>
@@ -48,7 +57,7 @@ export default function LoginContainer() {
         <h3 className={styles.textSubMain}>Novo cliente? Então registre-se <Link to='/cadastro'> <span className={styles.underscore}>aqui.</span></Link></h3>
         <form onSubmit={handleSubmit}>
             <h3 className={styles.indicativeText}>Login *</h3>
-            <input type="email" value={email} className={styles.inputLogin} required onChange={(e) => { handleChange(e) }} placeholder='Insira seu login ou email' />
+            <input value={email} className={styles.inputLogin} required onChange={(e) => { handleChange(e) }} placeholder='Insira seu login ou email' />
             <h3 className={styles.indicativeText}>Senha *</h3>
             <input type="password" value={password} className={styles.inputLogin} required onChange={(e) => { handlePasswordChange(e) }} placeholder='Insira sua senha' />
             <h3 className={styles.helpPassword}>Esqueci minha senha</h3>

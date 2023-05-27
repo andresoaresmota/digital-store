@@ -9,12 +9,12 @@ import { useContext } from "react";
 import { AuthContext } from "../../App.js";
 export default function Home() {
 	let mockup = mock;
-	
+
 	const usuario = useContext(AuthContext)
 	console.log(usuario.currentUser)
 	return (
 		<div className={styles.homeContainer}>
-			<BannerHome/>
+			<BannerHome />
 			{/* <Banner /> */}
 			<CardDestaques />
 			<ProdutosHome />
